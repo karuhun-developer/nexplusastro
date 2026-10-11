@@ -35,6 +35,7 @@ export async function measureSpeed(signal: AbortSignal, report: (progress: Speed
     const downloadSignal = AbortSignal.any([activeSignal, AbortSignal.timeout(speedLimits.downloadMs)]);
     let bytes = 0;
     let reserved = 0;
+    let reportedAt = started;
     const reservation = 1024 * 1024;
     report({ phase: 'download', mbps: 0, bytes });
     async function stream(index: number) {
@@ -53,7 +54,11 @@ export async function measureSpeed(signal: AbortSignal, report: (progress: Speed
               requestBytes += chunk.value.byteLength;
               bytes += chunk.value.byteLength;
               reserved -= chunk.value.byteLength;
-              report({ phase: 'download', mbps: downloadMbps(bytes, (performance.now() - started) / 1000), bytes });
+              const now = performance.now();
+              if (now - reportedAt >= 100) {
+                report({ phase: 'download', mbps: downloadMbps(bytes, (now - started) / 1000), bytes });
+                reportedAt = now;
+              }
               if (requestBytes >= reservation) { await reader.cancel(); break; }
             }
           } finally { reader.releaseLock(); }
