@@ -2,13 +2,23 @@
 import SiteLayout from '@/layouts/SiteLayout.astro';
 import SectionHeading from '@/components/molecules/SectionHeading.astro';
 import Breadcrumbs from '@/components/molecules/Breadcrumbs.astro';
-import {BandwidthCalculator} from '@/components/organisms/BandwidthCalculator';
-const breadcrumbs=[{label:'Kalkulator Bandwidth'}];
+import { BandwidthCalculator } from '@/components/organisms/BandwidthCalculator';
+const breadcrumbs = [{ label: 'Kalkulator Bandwidth' }];
 ---
-<SiteLayout title="Kalkulator Bandwidth" description="Perkirakan kebutuhan bandwidth dari pengguna aktif bersamaan dan asumsi per pengguna, lalu susun konsultasi dengan NEX+." breadcrumbs={breadcrumbs}>
+
+<SiteLayout
+  title="Kalkulator Bandwidth"
+  description="Perkirakan kebutuhan bandwidth dari pengguna aktif bersamaan dan asumsi per pengguna, lalu susun konsultasi dengan NEX+."
+  breadcrumbs={breadcrumbs}
+>
   <section class="container-nex py-12 lg:py-20">
-    <Breadcrumbs items={breadcrumbs}/>
-    <SectionHeading page kicker="Kalkulator Bandwidth" title="Perkirakan kebutuhan bandwidth Anda." description="Isi profil lokasi dan pola penggunaan untuk perkiraan awal, lalu lanjutkan konsultasi bersama tim NEX+."/>
-    <BandwidthCalculator client:load/>
+    <Breadcrumbs items={breadcrumbs} />
+    <SectionHeading
+      page
+      kicker="Kalkulator Bandwidth"
+      title="Perkirakan kebutuhan bandwidth Anda."
+      description="Isi profil lokasi dan pola penggunaan untuk perkiraan awal, lalu lanjutkan konsultasi bersama tim NEX+."
+    />
+    <BandwidthCalculator client:load />
   </section>
 </SiteLayout>

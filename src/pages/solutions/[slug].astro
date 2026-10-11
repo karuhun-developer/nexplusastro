@@ -4,10 +4,73 @@ import Breadcrumbs from '@/components/molecules/Breadcrumbs.astro';
 import Kicker from '@/components/atoms/Kicker.astro';
 import LinkButton from '@/components/atoms/LinkButton.astro';
 import ServiceCard from '@/components/molecules/ServiceCard.astro';
-import {ServiceDiagram} from '@/components/art/ServiceDiagram';
-import {services} from '@/lib/content';
-export function getStaticPaths(){return services.map(service=>({params:{slug:service.id},props:{service}}));}
-const {service}=Astro.props;
-const breadcrumbs=[{label:'Solusi',href:'/solutions'},{label:service.title}];
+import { ServiceDiagram } from '@/components/art/ServiceDiagram';
+import { services } from '@/lib/content';
+export function getStaticPaths() {
+  return services.map((service) => ({ params: { slug: service.id }, props: { service } }));
+}
+const { service } = Astro.props;
+const breadcrumbs = [{ label: 'Solusi', href: '/solutions' }, { label: service.title }];
 ---
-<SiteLayout title={service.title} description={service.description+' '+service.useCase} breadcrumbs={breadcrumbs}><section class="container-nex py-12 lg:py-20"><Breadcrumbs items={breadcrumbs}/><div class="grid items-center gap-10 lg:grid-cols-[1.2fr_1fr]"><div><Kicker>{service.category}</Kicker><h1 class="text-title leading-tight">{service.title}</h1><p class="mt-6 max-w-[48ch] text-lg text-muted">{service.description}</p><div class="mt-8 flex flex-wrap gap-3"><LinkButton href={'/contact?service='+service.id} diagonal>Konsultasi layanan</LinkButton><LinkButton href={service.contextHref} variant="outline">{service.contextHref==='/coverage'?'Cek cakupan':'Hubungi tim'}</LinkButton></div></div><div class="glass p-6 sm:p-10"><ServiceDiagram service={service}/><div class="mt-4 flex flex-wrap justify-center gap-2 text-xs text-muted">{service.endpoints.map(e=><span class="rounded-lg border border-rule px-3 py-2">{e}</span>)}</div></div></div><div class="mt-16 grid gap-8 border-y border-rule py-10 md:grid-cols-2"><div><Kicker>Kebutuhan Bisnis</Kicker><h2 class="text-2xl">Dirancang untuk konteks Anda.</h2><p class="mt-4 text-muted">{service.useCase}</p></div><div><h2 class="text-2xl">Mulai dari kebutuhan nyata.</h2><p class="mt-4 text-muted">Sampaikan lokasi, aktivitas bisnis, dan kebutuhan konektivitas Anda. Ketersediaan dan rancangan layanan dikonfirmasi langsung oleh tim NEX+.</p><LinkButton href="/bandwidth-calculator" variant="link">Hitung perkiraan bandwidth</LinkButton></div></div><section class="mt-16"><Kicker>Solusi Terkait</Kicker><h2 class="mb-8 text-section">Lengkapi kebutuhan jaringan Anda.</h2><div class="grid gap-5 md:grid-cols-2">{services.filter(s=>s.id!==service.id).slice(0,2).map(s=><ServiceCard service={s} compact/>)}</div></section></section></SiteLayout>
+
+<SiteLayout
+  title={service.title}
+  description={service.description + ' ' + service.useCase}
+  breadcrumbs={breadcrumbs}
+>
+  <section class="container-nex py-12 lg:py-20">
+    <Breadcrumbs items={breadcrumbs} />
+    <div class="grid items-center gap-10 lg:grid-cols-[1.2fr_1fr]">
+      <div>
+        <Kicker>{service.category}</Kicker>
+        <h1 class="text-title leading-tight">{service.title}</h1>
+        <p class="mt-6 max-w-[48ch] text-lg text-muted">{service.description}</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <LinkButton href={'/contact?service=' + service.id} diagonal>
+            Konsultasi layanan
+          </LinkButton>
+          <LinkButton href={service.contextHref} variant="outline">
+            {service.contextHref === '/coverage' ? 'Cek cakupan' : 'Hubungi tim'}
+          </LinkButton>
+        </div>
+      </div>
+      <div class="glass p-6 sm:p-10">
+        <ServiceDiagram service={service} />
+        <div class="mt-4 flex flex-wrap justify-center gap-2 text-xs text-muted">
+          {service.endpoints.map((e) => (
+            <span class="rounded-lg border border-rule px-3 py-2">{e}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+    <div class="mt-16 grid gap-8 border-y border-rule py-10 md:grid-cols-2">
+      <div>
+        <Kicker>Kebutuhan Bisnis</Kicker>
+        <h2 class="text-2xl">Dirancang untuk konteks Anda.</h2>
+        <p class="mt-4 text-muted">{service.useCase}</p>
+      </div>
+      <div>
+        <h2 class="text-2xl">Mulai dari kebutuhan nyata.</h2>
+        <p class="mt-4 text-muted">
+          Sampaikan lokasi, aktivitas bisnis, dan kebutuhan konektivitas Anda. Ketersediaan dan
+          rancangan layanan dikonfirmasi langsung oleh tim NEX+.
+        </p>
+        <LinkButton href="/bandwidth-calculator" variant="link">
+          Hitung perkiraan bandwidth
+        </LinkButton>
+      </div>
+    </div>
+    <section class="mt-16">
+      <Kicker>Solusi Terkait</Kicker>
+      <h2 class="mb-8 text-section">Lengkapi kebutuhan jaringan Anda.</h2>
+      <div class="grid gap-5 md:grid-cols-2">
+        {services
+          .filter((s) => s.id !== service.id)
+          .slice(0, 2)
+          .map((s) => (
+            <ServiceCard service={s} compact />
+          ))}
+      </div>
+    </section>
+  </section>
+</SiteLayout>

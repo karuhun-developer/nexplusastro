@@ -1,17 +1,142 @@
 import { useEffect, useState } from 'react';
 import type { SubmitEvent } from 'react';
 import { ArrowUpRight } from 'lucide-react';
-import { contactSchema,coverageSchema,composeContact,composeCoverage } from '@/lib/consultation';
-import { services,businessTypes } from '@/lib/content';
+import { contactSchema, coverageSchema, composeContact, composeCoverage } from '@/lib/consultation';
+import { services, businessTypes } from '@/lib/content';
 import { Button } from '../ui/button';
 import { Field } from '../ui/field';
-import { SelectField,TextareaField } from '../ui/select-field';
+import { SelectField, TextareaField } from '../ui/select-field';
 import { MessageResult } from '../molecules/MessageResult';
-export function EnquiryForm({mode='contact'}:{readonly mode?:'contact'|'coverage'}) {
- const [errors,setErrors]=useState<Readonly<Record<string,string>>>({});
- const [message,setMessage]=useState('');
- const [service,setService]=useState('');
- useEffect(()=>{const id=new URLSearchParams(window.location.search).get('service');const selected=services.find(s=>s.id===id);if(selected)setService(selected.title);},[]);
- function submit(event:SubmitEvent<HTMLFormElement>){event.preventDefault();const form=event.currentTarget;const data=Object.fromEntries(new FormData(form));const parsed=mode==='contact'?contactSchema.safeParse(data):coverageSchema.safeParse(data);if(!parsed.success){const next:Record<string,string>={};for(const issue of parsed.error.issues){const field=String(issue.path[0]);next[field]??=issue.message;}setErrors(next);setMessage('');const first=parsed.error.issues[0]?.path[0];if(typeof first==='string'){const el=form.elements.namedItem(first);if(el instanceof HTMLElement)el.focus();}return;}setErrors({});if(mode==='contact'){const contact=contactSchema.parse(data);setMessage(composeContact(contact));}else{setMessage(composeCoverage(coverageSchema.parse(data)));}}
- return <form className="glass p-6 sm:p-8" noValidate onSubmit={submit} onChange={()=>{setMessage('');}}><p className="mb-6 text-sm text-muted">Kolom bertanda * wajib diisi.</p><div className="grid gap-5">{mode==='contact'&&<><div className="grid gap-5 sm:grid-cols-2"><Field label="Nama *" name="name" autoComplete="name" required maxLength={100} error={errors['name']}/><Field label="Nama perusahaan" name="companyName" autoComplete="organization" maxLength={150} error={errors['companyName']}/></div><div className="grid gap-5 sm:grid-cols-2"><Field label="WhatsApp / Telepon *" name="phone" type="tel" autoComplete="tel" required maxLength={30} error={errors['phone']}/><Field label="Email" name="email" type="email" autoComplete="email" maxLength={254} error={errors['email']}/></div></>}<Field label={mode==='coverage'?'Lokasi atau alamat *':'Lokasi pemasangan *'} name="location" autoComplete="street-address" placeholder="Contoh: Banjarmasin Tengah" maxLength={300} required error={errors['location']}/>{mode==='coverage'&&<SelectField label="Jenis tempat" name="businessType"><option value="">Tidak disebutkan</option>{businessTypes.map(t=><option key={t}>{t}</option>)}</SelectField>}<SelectField label="Layanan yang diminati" name="service" value={service} onChange={e=>setService(e.target.value)}><option value="">Belum tahu</option>{services.map(s=><option key={s.id}>{s.title}</option>)}</SelectField>{mode==='contact'&&<TextareaField label="Catatan kebutuhan" name="notes" rows={4} maxLength={2000}/>}<Button type="submit">{mode==='contact'?'Susun konsultasi':'Susun pertanyaan'}<ArrowUpRight size={18} aria-hidden/></Button><p className="text-xs text-muted">Ketersediaan dan konfigurasi layanan dikonfirmasi oleh tim. Formulir ini menyusun pesan, tanpa menyimpan data Anda ke server.</p></div>{message&&<MessageResult key={message} message={message}/>}</form>;
+export function EnquiryForm({ mode = 'contact' }: { readonly mode?: 'contact' | 'coverage' }) {
+  const [errors, setErrors] = useState<Readonly<Record<string, string>>>({});
+  const [message, setMessage] = useState('');
+  const [service, setService] = useState('');
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get('service');
+    const selected = services.find((s) => s.id === id);
+    if (selected) setService(selected.title);
+  }, []);
+  function submit(event: SubmitEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const data = Object.fromEntries(new FormData(form));
+    const parsed =
+      mode === 'contact' ? contactSchema.safeParse(data) : coverageSchema.safeParse(data);
+    if (!parsed.success) {
+      const next: Record<string, string> = {};
+      for (const issue of parsed.error.issues) {
+        const field = String(issue.path[0]);
+        next[field] ??= issue.message;
+      }
+      setErrors(next);
+      setMessage('');
+      const first = parsed.error.issues[0]?.path[0];
+      if (typeof first === 'string') {
+        const el = form.elements.namedItem(first);
+        if (el instanceof HTMLElement) el.focus();
+      }
+      return;
+    }
+    setErrors({});
+    if (mode === 'contact') {
+      const contact = contactSchema.parse(data);
+      setMessage(composeContact(contact));
+    } else {
+      setMessage(composeCoverage(coverageSchema.parse(data)));
+    }
+  }
+  return (
+    <form
+      className="glass p-6 sm:p-8"
+      noValidate
+      onSubmit={submit}
+      onChange={() => {
+        setMessage('');
+      }}
+    >
+      <p className="mb-6 text-sm text-muted">Kolom bertanda * wajib diisi.</p>
+      <div className="grid gap-5">
+        {mode === 'contact' && (
+          <>
+            <div className="grid gap-5 sm:grid-cols-2">
+              <Field
+                label="Nama *"
+                name="name"
+                autoComplete="name"
+                required
+                maxLength={100}
+                error={errors['name']}
+              />
+              <Field
+                label="Nama perusahaan"
+                name="companyName"
+                autoComplete="organization"
+                maxLength={150}
+                error={errors['companyName']}
+              />
+            </div>
+            <div className="grid gap-5 sm:grid-cols-2">
+              <Field
+                label="WhatsApp / Telepon *"
+                name="phone"
+                type="tel"
+                autoComplete="tel"
+                required
+                maxLength={30}
+                error={errors['phone']}
+              />
+              <Field
+                label="Email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                maxLength={254}
+                error={errors['email']}
+              />
+            </div>
+          </>
+        )}
+        <Field
+          label={mode === 'coverage' ? 'Lokasi atau alamat *' : 'Lokasi pemasangan *'}
+          name="location"
+          autoComplete="street-address"
+          placeholder="Contoh: Banjarmasin Tengah"
+          maxLength={300}
+          required
+          error={errors['location']}
+        />
+        {mode === 'coverage' && (
+          <SelectField label="Jenis tempat" name="businessType">
+            <option value="">Tidak disebutkan</option>
+            {businessTypes.map((t) => (
+              <option key={t}>{t}</option>
+            ))}
+          </SelectField>
+        )}
+        <SelectField
+          label="Layanan yang diminati"
+          name="service"
+          value={service}
+          onChange={(e) => setService(e.target.value)}
+        >
+          <option value="">Belum tahu</option>
+          {services.map((s) => (
+            <option key={s.id}>{s.title}</option>
+          ))}
+        </SelectField>
+        {mode === 'contact' && (
+          <TextareaField label="Catatan kebutuhan" name="notes" rows={4} maxLength={2000} />
+        )}
+        <Button type="submit">
+          {mode === 'contact' ? 'Susun konsultasi' : 'Susun pertanyaan'}
+          <ArrowUpRight size={18} aria-hidden />
+        </Button>
+        <p className="text-xs text-muted">
+          Ketersediaan dan konfigurasi layanan dikonfirmasi oleh tim. Formulir ini menyusun pesan,
+          tanpa menyimpan data Anda ke server.
+        </p>
+      </div>
+      {message && <MessageResult key={message} message={message} />}
+    </form>
+  );
 }

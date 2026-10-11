@@ -1,3 +1,23 @@
-import {useEffect,useState} from 'react';
-const clockFormat = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit',timeZone:'Asia/Makassar'});
-export function MonitoringClock(){const [clock,setClock]=useState('--:--:--');useEffect(()=>{const tick=()=>{if(!document.hidden)setClock(clockFormat.format(new Date()));};tick();const timer=setInterval(tick,1000);return()=>clearInterval(timer);},[]);return <span className="font-mono text-xs text-muted" aria-label="Jam saat ini WITA">{clock} WITA</span>;}
+import { useEffect, useState } from 'react';
+const clockFormat = new Intl.DateTimeFormat('en-GB', {
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  timeZone: 'Asia/Makassar',
+});
+export function MonitoringClock() {
+  const [clock, setClock] = useState('--:--:--');
+  useEffect(() => {
+    const tick = () => {
+      if (!document.hidden) setClock(clockFormat.format(new Date()));
+    };
+    tick();
+    const timer = setInterval(tick, 1000);
+    return () => clearInterval(timer);
+  }, []);
+  return (
+    <span className="font-mono text-xs text-muted" aria-label="Jam saat ini WITA">
+      {clock} WITA
+    </span>
+  );
+}

@@ -1,7 +1,27 @@
 ---
 import Icon from './Icon.astro';
 import { cn } from '@/lib/utils';
-interface Props { href:string; variant?:'primary'|'outline'|'link'; diagonal?:boolean; class?:string; }
-const { href,variant='primary',diagonal=false,class:className='' }=Astro.props;
+interface Props {
+  href: string;
+  variant?: 'primary' | 'outline' | 'link';
+  diagonal?: boolean;
+  class?: string;
+}
+const { href, variant = 'primary', diagonal = false, class: className = '' } = Astro.props;
 ---
-<a href={href} class={cn('inline-flex min-h-12 items-center justify-center gap-6 rounded-control px-6 py-3 text-[.9375rem] font-semibold transition-colors duration-150 active:opacity-75',variant==='primary'?'bg-action text-white hover:bg-action-hover':variant==='outline'?'border border-rule hover:bg-raised':'px-0 justify-start hover:underline underline-offset-4',className)}><slot/><Icon name={diagonal?'diagonal':'arrow'}/></a>
+
+<a
+  href={href}
+  class={cn(
+    'inline-flex min-h-12 items-center justify-center gap-6 rounded-control px-6 py-3 text-[.9375rem] font-semibold transition-colors duration-150 active:opacity-75',
+    variant === 'primary'
+      ? 'bg-action text-white hover:bg-action-hover'
+      : variant === 'outline'
+        ? 'border border-rule hover:bg-raised'
+        : 'px-0 justify-start hover:underline underline-offset-4',
+    className,
+  )}
+>
+  <slot />
+  <Icon name={diagonal ? 'diagonal' : 'arrow'} />
+</a>

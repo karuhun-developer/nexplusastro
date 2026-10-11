@@ -3,11 +3,28 @@ import SiteLayout from '@/layouts/SiteLayout.astro';
 import Kicker from '@/components/atoms/Kicker.astro';
 import LinkButton from '@/components/atoms/LinkButton.astro';
 ---
-<SiteLayout title="Halaman Tidak Ditemukan" description="Halaman yang Anda cari belum tersedia. Kembali ke beranda atau jelajahi solusi konektivitas NEX+." noindex>
+
+<SiteLayout
+  title="Halaman Tidak Ditemukan"
+  description="Halaman yang Anda cari belum tersedia. Kembali ke beranda atau jelajahi solusi konektivitas NEX+."
+  noindex
+>
   <section class="container-nex flex min-h-[60vh] flex-col items-start justify-center py-20">
     <Kicker>404 / Halaman tidak ditemukan</Kicker>
-    <h1 class="mt-6 max-w-3xl text-[clamp(2rem,5vw,4rem)]">Koneksi terputus<br />di halaman ini.</h1>
-    <p class="mt-6 max-w-xl text-muted">Alamat ini tidak tersedia. Anda bisa kembali ke beranda atau menemukan layanan yang sesuai dengan kebutuhan bisnis Anda.</p>
-    <div class="mt-8 flex flex-wrap gap-3"><LinkButton href="/">Kembali ke beranda</LinkButton><LinkButton href="/solutions" variant="outline">Jelajahi solusi</LinkButton></div>
+    <h1 class="mt-6 max-w-3xl text-[clamp(2rem,5vw,4rem)]">
+      Koneksi terputus
+      <br />
+      di halaman ini.
+    </h1>
+    <p class="mt-6 max-w-xl text-muted">
+      Alamat ini tidak tersedia. Anda bisa kembali ke beranda atau menemukan layanan yang sesuai
+      dengan kebutuhan bisnis Anda.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <LinkButton href="/">Kembali ke beranda</LinkButton>
+      <LinkButton href="/solutions" variant="outline">
+        Jelajahi solusi
+      </LinkButton>
+    </div>
   </section>
 </SiteLayout>

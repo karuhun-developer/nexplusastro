@@ -1,8 +1,77 @@
-export type LinkStatus='up'|'warn'|'down';
-export const monitoringMeta={product:'NEX+ Monitoring',version:'v2.4.1',source:'NMS Server 01',observedAt:'17 Agustus 2026, 22:00 WITA'} as const;
-export const fleet={online:17,total:18,incidentsOpen:1,incidentsResolved24h:6,sessions:38} as const;
-export const focusNode={name:'neuCentrIX Banjarmasin',address:'203.0.113.42',interfaceName:'pppoe-0113-nexplus'} as const;
-export const stream={labels:['21:55','01:55','05:55','09:55','13:55'],inbound:[88,91,86,79,71,66,62,61,64,73,88,97,104,109,112,108,101,96,99,107,114,118,111,102],outbound:[52,55,51,47,43,40,38,37,39,45,54,60,66,70,73,71,66,62,64,70,76,79,74,67],peak:120} as const;
-export const links=[{id:'l1',name:'Cyber 2 — neuCentrIX',location:'Local Loop',status:'up',detail:'Uptime contoh 99,9% dalam 30 hari'},{id:'l2',name:'neuCentrIX — Distribusi A',location:'Banjarmasin',status:'up',detail:'Uptime contoh 100% dalam 30 hari'},{id:'l3',name:'Distribusi B — Akses Utara',location:'Banjarbaru',status:'warn',detail:'Latensi naik sejak 20:40'},{id:'l4',name:'Core Router 02',location:'Banjarmasin',status:'down',detail:'Perangkat tidak merespons'},{id:'l5',name:'Akses Selatan',location:'Banjarmasin',status:'warn',detail:'Pemakaian mendekati kapasitas'}] as const;
-export const resources=[{label:'Memori core router',value:92,unit:'terpakai'},{label:'Utilisasi uplink',value:80,unit:'utilisasi'},{label:'Beban CPU agregasi',value:95,unit:'beban'}] as const;
-export const incidents=[{id:'i1',time:'18:42',title:'Core Router 02 berhenti merespons',status:'open'},{id:'i2',time:'15:30',title:'Latensi Akses Utara di atas ambang',status:'resolved'},{id:'i3',time:'11:15',title:'Sesi PPPoE putus berulang',status:'resolved'}] as const;
+export type LinkStatus = 'up' | 'warn' | 'down';
+export const monitoringMeta = {
+  product: 'NEX+ Monitoring',
+  version: 'v2.4.1',
+  source: 'NMS Server 01',
+  observedAt: '17 Agustus 2026, 22:00 WITA',
+} as const;
+export const fleet = {
+  online: 17,
+  total: 18,
+  incidentsOpen: 1,
+  incidentsResolved24h: 6,
+  sessions: 38,
+} as const;
+export const focusNode = {
+  name: 'neuCentrIX Banjarmasin',
+  address: '203.0.113.42',
+  interfaceName: 'pppoe-0113-nexplus',
+} as const;
+export const stream = {
+  labels: ['21:55', '01:55', '05:55', '09:55', '13:55'],
+  inbound: [
+    88, 91, 86, 79, 71, 66, 62, 61, 64, 73, 88, 97, 104, 109, 112, 108, 101, 96, 99, 107, 114, 118,
+    111, 102,
+  ],
+  outbound: [
+    52, 55, 51, 47, 43, 40, 38, 37, 39, 45, 54, 60, 66, 70, 73, 71, 66, 62, 64, 70, 76, 79, 74, 67,
+  ],
+  peak: 120,
+} as const;
+export const links = [
+  {
+    id: 'l1',
+    name: 'Cyber 2 — neuCentrIX',
+    location: 'Local Loop',
+    status: 'up',
+    detail: 'Uptime contoh 99,9% dalam 30 hari',
+  },
+  {
+    id: 'l2',
+    name: 'neuCentrIX — Distribusi A',
+    location: 'Banjarmasin',
+    status: 'up',
+    detail: 'Uptime contoh 100% dalam 30 hari',
+  },
+  {
+    id: 'l3',
+    name: 'Distribusi B — Akses Utara',
+    location: 'Banjarbaru',
+    status: 'warn',
+    detail: 'Latensi naik sejak 20:40',
+  },
+  {
+    id: 'l4',
+    name: 'Core Router 02',
+    location: 'Banjarmasin',
+    status: 'down',
+    detail: 'Perangkat tidak merespons',
+  },
+  {
+    id: 'l5',
+    name: 'Akses Selatan',
+    location: 'Banjarmasin',
+    status: 'warn',
+    detail: 'Pemakaian mendekati kapasitas',
+  },
+] as const;
+export const resources = [
+  { label: 'Memori core router', value: 92, unit: 'terpakai' },
+  { label: 'Utilisasi uplink', value: 80, unit: 'utilisasi' },
+  { label: 'Beban CPU agregasi', value: 95, unit: 'beban' },
+] as const;
+export const incidents = [
+  { id: 'i1', time: '18:42', title: 'Core Router 02 berhenti merespons', status: 'open' },
+  { id: 'i2', time: '15:30', title: 'Latensi Akses Utara di atas ambang', status: 'resolved' },
+  { id: 'i3', time: '11:15', title: 'Sesi PPPoE putus berulang', status: 'resolved' },
+] as const;

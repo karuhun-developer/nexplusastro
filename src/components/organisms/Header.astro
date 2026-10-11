@@ -1,27 +1,146 @@
 ---
 import Brand from '../atoms/Brand.astro';
 import Icon from '../atoms/Icon.astro';
-import { navigation,services } from '@/lib/content';
-const path=Astro.url.pathname;
+import { navigation, services } from '@/lib/content';
+const path = Astro.url.pathname;
 ---
+
 <header class="sticky top-0 z-40 border-b border-rule bg-canvas/90 backdrop-blur-xl">
   <div class="container-nex flex h-[72px] items-center justify-between gap-4 lg:h-[88px]">
-    <a href="/" aria-label="NEX+ beranda" class="shrink-0"><Brand/></a>
+    <a href="/" aria-label="NEX+ beranda" class="shrink-0">
+      <Brand />
+    </a>
     <nav aria-label="Navigasi utama" class="hidden items-center gap-7 text-sm font-medium lg:flex">
-      <details class="relative" data-dropdown><summary class="flex min-h-11 list-none items-center gap-2 hover:text-accent-text">Solusi <span aria-hidden="true">⌄</span></summary><div class="glass absolute left-0 top-full w-72 p-3"><a href="/solutions" class="block rounded-control p-3 hover:bg-raised">Semua solusi</a>{services.map(s=><a href={'/solutions/'+s.id} class="block rounded-control p-3 hover:bg-raised">{s.title}</a>)}</div></details>
-      {navigation.map(n=><a href={n.href} aria-current={path===n.href?'page':undefined} class="flex min-h-11 items-center hover:text-accent-text">{n.label}</a>)}
-      <details class="relative" data-dropdown><summary class="flex min-h-11 list-none items-center gap-2 hover:text-accent-text">Alat <span aria-hidden="true">⌄</span></summary><div class="glass absolute right-0 top-full w-64 p-3">{[{label:'Kalkulator Bandwidth',href:'/bandwidth-calculator'},{label:'Uji Kecepatan',href:'/speed-test'},{label:'Demo Monitoring',href:'/monitoring'}].map(n=><a href={n.href} class="block rounded-control p-3 hover:bg-raised">{n.label}</a>)}</div></details>
+      <details class="relative" data-dropdown>
+        <summary class="flex min-h-11 list-none items-center gap-2 hover:text-accent-text">
+          Solusi <span aria-hidden="true">⌄</span>
+        </summary>
+        <div class="glass absolute left-0 top-full w-72 p-3">
+          <a href="/solutions" class="block rounded-control p-3 hover:bg-raised">
+            Semua solusi
+          </a>
+          {services.map((s) => (
+            <a href={'/solutions/' + s.id} class="block rounded-control p-3 hover:bg-raised">
+              {s.title}
+            </a>
+          ))}
+        </div>
+      </details>
+      {navigation.map((n) => (
+        <a
+          href={n.href}
+          aria-current={path === n.href ? 'page' : undefined}
+          class="flex min-h-11 items-center hover:text-accent-text"
+        >
+          {n.label}
+        </a>
+      ))}
+      <details class="relative" data-dropdown>
+        <summary class="flex min-h-11 list-none items-center gap-2 hover:text-accent-text">
+          Alat <span aria-hidden="true">⌄</span>
+        </summary>
+        <div class="glass absolute right-0 top-full w-64 p-3">
+          {[
+            { label: 'Kalkulator Bandwidth', href: '/bandwidth-calculator' },
+            { label: 'Uji Kecepatan', href: '/speed-test' },
+            { label: 'Demo Monitoring', href: '/monitoring' },
+          ].map((n) => (
+            <a href={n.href} class="block rounded-control p-3 hover:bg-raised">
+              {n.label}
+            </a>
+          ))}
+        </div>
+      </details>
     </nav>
-    <div class="flex items-center gap-2 sm:gap-4"><button type="button" data-theme-toggle class="flex size-11 items-center justify-center rounded-full border border-rule hover:bg-raised" aria-label="Ubah tema"><Icon name="sun"/></button><a href="/contact" data-consult class="hidden min-h-11 items-center gap-4 rounded-control bg-action px-5 text-sm font-semibold text-white hover:bg-action-hover sm:inline-flex">Konsultasi <Icon name="diagonal"/></a><button type="button" id="menu-toggle" aria-controls="mobile-menu" aria-expanded="false" aria-label="Buka menu" class="flex size-11 items-center justify-center rounded-control border border-rule lg:hidden"><Icon name="menu"/></button></div>
+    <div class="flex items-center gap-2 sm:gap-4">
+      <button
+        type="button"
+        data-theme-toggle
+        class="flex size-11 items-center justify-center rounded-full border border-rule hover:bg-raised"
+        aria-label="Ubah tema"
+      >
+        <Icon name="sun" />
+      </button>
+      <a
+        href="/contact"
+        data-consult
+        class="hidden min-h-11 items-center gap-4 rounded-control bg-action px-5 text-sm font-semibold text-white hover:bg-action-hover sm:inline-flex"
+      >
+        Konsultasi <Icon name="diagonal" />
+      </a>
+      <button
+        type="button"
+        id="menu-toggle"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+        aria-label="Buka menu"
+        class="flex size-11 items-center justify-center rounded-control border border-rule lg:hidden"
+      >
+        <Icon name="menu" />
+      </button>
+    </div>
   </div>
-  <nav id="mobile-menu" aria-label="Navigasi ponsel" hidden class="container-nex max-h-[calc(100dvh-72px)] overflow-y-auto border-t border-rule py-5 lg:!hidden"><div class="grid gap-1">{[{label:'Semua Solusi',href:'/solutions'},...navigation,{label:'Kalkulator Bandwidth',href:'/bandwidth-calculator'},{label:'Uji Kecepatan',href:'/speed-test'},{label:'Demo Monitoring',href:'/monitoring'},{label:'Konsultasi',href:'/contact'}].map(n=><a href={n.href} class="rounded-control px-3 py-3 hover:bg-raised">{n.label}</a>)}</div></nav>
+  <nav
+    id="mobile-menu"
+    aria-label="Navigasi ponsel"
+    hidden
+    class="container-nex max-h-[calc(100dvh-72px)] overflow-y-auto border-t border-rule py-5 lg:!hidden"
+  >
+    <div class="grid gap-1">
+      {[
+        { label: 'Semua Solusi', href: '/solutions' },
+        ...navigation,
+        { label: 'Kalkulator Bandwidth', href: '/bandwidth-calculator' },
+        { label: 'Uji Kecepatan', href: '/speed-test' },
+        { label: 'Demo Monitoring', href: '/monitoring' },
+        { label: 'Konsultasi', href: '/contact' },
+      ].map((n) => (
+        <a href={n.href} class="rounded-control px-3 py-3 hover:bg-raised">
+          {n.label}
+        </a>
+      ))}
+    </div>
+  </nav>
 </header>
 <script>
-const toggle=document.querySelector<HTMLButtonElement>('#menu-toggle');
-const menu=document.querySelector<HTMLElement>('#mobile-menu');
-function closeMenu(){if(menu) menu.hidden=true;toggle?.setAttribute('aria-expanded','false');toggle?.setAttribute('aria-label','Buka menu');}
-toggle?.addEventListener('click',()=>{if(!menu)return;menu.hidden=!menu.hidden;toggle.setAttribute('aria-expanded',String(!menu.hidden));toggle.setAttribute('aria-label',menu.hidden?'Buka menu':'Tutup menu');});
-document.addEventListener('keydown',event=>{if(event.key!=='Escape')return;if(menu&&!menu.hidden){closeMenu();toggle?.focus();}document.querySelectorAll<HTMLDetailsElement>('[data-dropdown][open]').forEach(item=>{item.open=false;item.querySelector('summary')?.focus();});});
-document.addEventListener('click',event=>{if(!(event.target instanceof Element))return;document.querySelectorAll<HTMLDetailsElement>('[data-dropdown][open]').forEach(item=>{if(!item.contains(event.target instanceof Node?event.target:null))item.open=false;});if(event.target.closest('#mobile-menu a'))closeMenu();});
-document.querySelector('[data-theme-toggle]')?.addEventListener('click',()=>{const theme=document.documentElement.dataset['theme']==='light'?'dark':'light';document.documentElement.dataset['theme']=theme;try{localStorage.setItem('nex-theme',theme);}catch(error){if(!(error instanceof DOMException))throw error;} });
+  const toggle = document.querySelector<HTMLButtonElement>('#menu-toggle');
+  const menu = document.querySelector<HTMLElement>('#mobile-menu');
+  function closeMenu() {
+    if (menu) menu.hidden = true;
+    toggle?.setAttribute('aria-expanded', 'false');
+    toggle?.setAttribute('aria-label', 'Buka menu');
+  }
+  toggle?.addEventListener('click', () => {
+    if (!menu) return;
+    menu.hidden = !menu.hidden;
+    toggle.setAttribute('aria-expanded', String(!menu.hidden));
+    toggle.setAttribute('aria-label', menu.hidden ? 'Buka menu' : 'Tutup menu');
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    if (menu && !menu.hidden) {
+      closeMenu();
+      toggle?.focus();
+    }
+    document.querySelectorAll<HTMLDetailsElement>('[data-dropdown][open]').forEach((item) => {
+      item.open = false;
+      item.querySelector('summary')?.focus();
+    });
+  });
+  document.addEventListener('click', (event) => {
+    if (!(event.target instanceof Element)) return;
+    document.querySelectorAll<HTMLDetailsElement>('[data-dropdown][open]').forEach((item) => {
+      if (!item.contains(event.target instanceof Node ? event.target : null)) item.open = false;
+    });
+    if (event.target.closest('#mobile-menu a')) closeMenu();
+  });
+  document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
+    const theme = document.documentElement.dataset['theme'] === 'light' ? 'dark' : 'light';
+    document.documentElement.dataset['theme'] = theme;
+    try {
+      localStorage.setItem('nex-theme', theme);
+    } catch (error) {
+      if (!(error instanceof DOMException)) throw error;
+    }
+  });
 </script>

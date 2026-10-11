@@ -4,15 +4,138 @@ import Header from '@/components/organisms/Header.astro';
 import Footer from '@/components/organisms/Footer.astro';
 import { ConsultationDialog } from '@/components/organisms/ConsultationDialog';
 import { company } from '@/lib/content';
-interface Props { title:string; description:string; noindex?:boolean; breadcrumbs?:readonly { readonly label:string; readonly href?:string }[]; }
-const {title,description,noindex=false,breadcrumbs=[]}=Astro.props;
-const indexable=__SITE_INDEXABLE__&&!import.meta.env.DEV&&!noindex;
-const canonical=new URL(Astro.url.pathname,Astro.site).href;
-const name=title==='NEX+ — Smart Connectivity'?title:title+' | NEX+';
-const schema=[{'@context':'https://schema.org','@type':'Organization',name:company.legalName,url:Astro.site?.href,logo:new URL('/brand/nexus-logo.svg',Astro.site).href},{'@context':'https://schema.org','@type':'WebPage',name,description,url:canonical},...(breadcrumbs.length?[{'@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:[{label:'Beranda',href:'/'},...breadcrumbs].map((b,i)=>({'@type':'ListItem',position:i+1,name:b.label,item:new URL(b.href??Astro.url.pathname,Astro.site).href}))}]:[])];
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+  breadcrumbs?: readonly { readonly label: string; readonly href?: string }[];
+}
+const { title, description, noindex = false, breadcrumbs = [] } = Astro.props;
+const indexable = __SITE_INDEXABLE__ && !import.meta.env.DEV && !noindex;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const name = title === 'NEX+ — Smart Connectivity' ? title : title + ' | NEX+';
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: company.legalName,
+    url: Astro.site?.href,
+    logo: new URL('/brand/nexus-logo.svg', Astro.site).href,
+  },
+  { '@context': 'https://schema.org', '@type': 'WebPage', name, description, url: canonical },
+  ...(breadcrumbs.length
+    ? [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [{ label: 'Beranda', href: '/' }, ...breadcrumbs].map((b, i) => ({
+            '@type': 'ListItem',
+            position: i + 1,
+            name: b.label,
+            item: new URL(b.href ?? Astro.url.pathname, Astro.site).href,
+          })),
+        },
+      ]
+    : []),
+];
 ---
-<!doctype html><html lang="id" id="top" data-theme="dark"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>{name}</title><meta name="description" content={description}/><meta name="robots" content={indexable?'index, follow':'noindex, nofollow'}/><link rel="canonical" href={canonical}/><link rel="icon" type="image/svg+xml" href="/favicon.svg"/><link rel="preload" href="/fonts/general-sans-500.woff2" as="font" type="font/woff2" crossorigin/><link rel="preload" href="/fonts/switzer-400.woff2" as="font" type="font/woff2" crossorigin/><meta property="og:type" content="website"/><meta property="og:locale" content="id_ID"/><meta property="og:site_name" content="NEX+"/><meta property="og:title" content={name}/><meta property="og:description" content={description}/><meta property="og:url" content={canonical}/><meta property="og:image" content={new URL('/og.png',Astro.site).href}/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content={name}/><meta name="twitter:description" content={description}/><meta name="twitter:image" content={new URL('/og.png',Astro.site).href}/><script type="application/ld+json" set:html={JSON.stringify(schema).replaceAll('<','\u003c')}/><script is:inline>try { const saved=localStorage.getItem('nex-theme');document.documentElement.dataset.theme=saved==='light'?'light':'dark'; } catch(error) { document.documentElement.dataset.theme='dark'; }</script>{import.meta.env.DEV&&<><script is:inline crossorigin="anonymous" src="https://unpkg.com/react-grab/dist/index.global.js"></script><script is:inline crossorigin="anonymous" src="https://unpkg.com/react-scan/dist/auto.global.js"></script></>}</head><body><a href="#main" class="fixed top-3 left-3 z-50 -translate-y-24 rounded-control bg-ink px-6 py-3 text-canvas focus:translate-y-0">Lewati ke konten</a><Header/><main id="main"><slot/></main><Footer/><ConsultationDialog floating client:idle/></body></html>
+
+<!doctype html>
+<html lang="id" id="top" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{name}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={indexable ? 'index, follow' : 'noindex, nofollow'} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="preload"
+      href="/fonts/general-sans-500.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="preload" href="/fonts/switzer-400.woff2" as="font" type="font/woff2" crossorigin />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="id_ID" />
+    <meta property="og:site_name" content="NEX+" />
+    <meta property="og:title" content={name} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL('/og.png', Astro.site).href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={name} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL('/og.png', Astro.site).href} />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(schema).replaceAll('<', '\u003c')}
+    />
+    <script is:inline>
+      try {
+        const saved = localStorage.getItem('nex-theme');
+        document.documentElement.dataset.theme = saved === 'light' ? 'light' : 'dark';
+      } catch (error) {
+        document.documentElement.dataset.theme = 'dark';
+      }
+    </script>
+    {import.meta.env.DEV && (
+      <>
+        <script
+          is:inline
+          crossorigin="anonymous"
+          src="https://unpkg.com/react-grab/dist/index.global.js"
+        ></script>
+        <script
+          is:inline
+          crossorigin="anonymous"
+          src="https://unpkg.com/react-scan/dist/auto.global.js"
+        ></script>
+      </>
+    )}
+  </head>
+  <body>
+    <a
+      href="#main"
+      class="fixed top-3 left-3 z-50 -translate-y-24 rounded-control bg-ink px-6 py-3 text-canvas focus:translate-y-0"
+    >
+      Lewati ke konten
+    </a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <ConsultationDialog floating client:idle />
+  </body>
+</html>
 <script>
-if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.remove('waiting');observer.unobserve(entry.target);}}),{threshold:.08});document.querySelectorAll('[data-reveal]').forEach(el=>{el.classList.add('ready','waiting');observer.observe(el);});}
-document.querySelectorAll<HTMLButtonElement>('[data-marquee-toggle]').forEach(button=>button.addEventListener('click',()=>{const strip=button.closest('section')?.querySelector<HTMLElement>('.marquee');if(!strip)return;const paused=strip.dataset['paused']!=='true';strip.dataset['paused']=String(paused);button.setAttribute('aria-pressed',String(paused));button.textContent=paused?'Lanjutkan animasi':'Jeda animasi';}));
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const observer = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.remove('waiting');
+            observer.unobserve(entry.target);
+          }
+        }),
+      { threshold: 0.08 },
+    );
+    document.querySelectorAll('[data-reveal]').forEach((el) => {
+      el.classList.add('ready', 'waiting');
+      observer.observe(el);
+    });
+  }
+  document.querySelectorAll<HTMLButtonElement>('[data-marquee-toggle]').forEach((button) =>
+    button.addEventListener('click', () => {
+      const strip = button.closest('section')?.querySelector<HTMLElement>('.marquee');
+      if (!strip) return;
+      const paused = strip.dataset['paused'] !== 'true';
+      strip.dataset['paused'] = String(paused);
+      button.setAttribute('aria-pressed', String(paused));
+      button.textContent = paused ? 'Lanjutkan animasi' : 'Jeda animasi';
+    }),
+  );
 </script>

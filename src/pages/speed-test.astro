@@ -2,8 +2,24 @@
 import SiteLayout from '@/layouts/SiteLayout.astro';
 import SectionHeading from '@/components/molecules/SectionHeading.astro';
 import Breadcrumbs from '@/components/molecules/Breadcrumbs.astro';
-import {SpeedTest} from '@/components/organisms/SpeedTest';
-const breadcrumbs=[{label:'Uji Kecepatan'}];
+import { SpeedTest } from '@/components/organisms/SpeedTest';
+const breadcrumbs = [{ label: 'Uji Kecepatan' }];
 ---
-<SiteLayout title="Uji Kecepatan Koneksi" description="Ukur unduh dan respons HTTP koneksi Anda ke server halaman ini, dengan batas waktu, kuota data, dan tombol pembatalan." breadcrumbs={breadcrumbs}><section class="container-nex py-12 lg:py-20"><Breadcrumbs items={breadcrumbs}/><SectionHeading page kicker="Uji Kecepatan" title="Kenali koneksi
-yang Anda gunakan." description="Pengukuran unduh sederhana dari perangkat Anda. Hasil membantu melihat kondisi koneksi saat ini."/><SpeedTest client:load/></section></SiteLayout>
+
+<SiteLayout
+  title="Uji Kecepatan Koneksi"
+  description="Ukur unduh dan respons HTTP koneksi Anda ke server halaman ini, dengan batas waktu, kuota data, dan tombol pembatalan."
+  breadcrumbs={breadcrumbs}
+>
+  <section class="container-nex py-12 lg:py-20">
+    <Breadcrumbs items={breadcrumbs} />
+    <SectionHeading
+      page
+      kicker="Uji Kecepatan"
+      title="Kenali koneksi
+yang Anda gunakan."
+      description="Pengukuran unduh sederhana dari perangkat Anda. Hasil membantu melihat kondisi koneksi saat ini."
+    />
+    <SpeedTest client:load />
+  </section>
+</SiteLayout>

@@ -4,8 +4,49 @@ import SectionHeading from '@/components/molecules/SectionHeading.astro';
 import Breadcrumbs from '@/components/molecules/Breadcrumbs.astro';
 import ServiceCard from '@/components/molecules/ServiceCard.astro';
 import LinkButton from '@/components/atoms/LinkButton.astro';
-import {services} from '@/lib/content';
-const breadcrumbs=[{label:'Solusi'}];
+import { services } from '@/lib/content';
+const breadcrumbs = [{ label: 'Solusi' }];
 ---
-<SiteLayout title="Solusi Konektivitas Bisnis" description="Jelajahi Internet Dedicated, Metro E, VSAT, Managed Services, dan IPTV System Hospitality dari NEX+." breadcrumbs={breadcrumbs}><section class="container-nex py-12 lg:py-20"><Breadcrumbs items={breadcrumbs}/><SectionHeading page kicker="Solusi NEX+" title="Konektivitas untuk
-setiap kebutuhan bisnis." description="Pilih layanan sesuai kebutuhan operasional, lokasi, dan jaringan bisnis Anda. Tim NEX+ membantu mendiskusikan kebutuhan teknisnya."/><nav aria-label="Pilih layanan" class="mb-10 flex flex-wrap gap-2">{services.map(s=><a href={'#service-'+s.id} class="min-h-11 rounded-control border border-rule px-4 py-3 text-sm hover:bg-raised">{s.title}</a>)}</nav><div class="grid gap-5 md:grid-cols-2">{services.map(s=><ServiceCard service={s}/>)}</div><div class="glass mt-12 flex flex-wrap items-center justify-between gap-6 p-8"><div><h2 class="text-2xl">Belum yakin layanan yang tepat?</h2><p class="mt-3 text-sm text-muted">Ceritakan kebutuhan bisnis Anda dan susun konsultasi bersama NEX+.</p></div><LinkButton href="/contact" diagonal>Konsultasikan kebutuhan</LinkButton></div></section></SiteLayout>
+
+<SiteLayout
+  title="Solusi Konektivitas Bisnis"
+  description="Jelajahi Internet Dedicated, Metro E, VSAT, Managed Services, dan IPTV System Hospitality dari NEX+."
+  breadcrumbs={breadcrumbs}
+>
+  <section class="container-nex py-12 lg:py-20">
+    <Breadcrumbs items={breadcrumbs} />
+    <SectionHeading
+      page
+      kicker="Solusi NEX+"
+      title="Konektivitas untuk
+setiap kebutuhan bisnis."
+      description="Pilih layanan sesuai kebutuhan operasional, lokasi, dan jaringan bisnis Anda. Tim NEX+ membantu mendiskusikan kebutuhan teknisnya."
+    />
+    <nav aria-label="Pilih layanan" class="mb-10 flex flex-wrap gap-2">
+      {services.map((s) => (
+        <a
+          href={'#service-' + s.id}
+          class="min-h-11 rounded-control border border-rule px-4 py-3 text-sm hover:bg-raised"
+        >
+          {s.title}
+        </a>
+      ))}
+    </nav>
+    <div class="grid gap-5 md:grid-cols-2">
+      {services.map((s) => (
+        <ServiceCard service={s} />
+      ))}
+    </div>
+    <div class="glass mt-12 flex flex-wrap items-center justify-between gap-6 p-8">
+      <div>
+        <h2 class="text-2xl">Belum yakin layanan yang tepat?</h2>
+        <p class="mt-3 text-sm text-muted">
+          Ceritakan kebutuhan bisnis Anda dan susun konsultasi bersama NEX+.
+        </p>
+      </div>
+      <LinkButton href="/contact" diagonal>
+        Konsultasikan kebutuhan
+      </LinkButton>
+    </div>
+  </section>
+</SiteLayout>
