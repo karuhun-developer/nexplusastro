@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
+.vercel/
+test-results/
+playwright-report/
+.react-doctor*/
+.DS_Store
