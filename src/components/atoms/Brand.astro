@@ -1,5 +1,14 @@
 ---
-interface Props { class?:string; }
-const { class:className='' }=Astro.props;
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
 ---
-<span class:list={['inline-flex font-display text-3xl font-bold tracking-[-.07em]',className]}>NEX<span class="text-accent">+</span></span>
+
+<img
+  src="/brand/nexus-logo.svg"
+  alt="NEX+ — PT. Nexus Indonesia Plus"
+  width="120"
+  height="24"
+  class:list={['h-6 w-[120px]', className]}
+/>
