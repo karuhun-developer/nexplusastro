@@ -11,9 +11,13 @@ const path = Astro.url.pathname;
       <Brand />
     </a>
     <nav aria-label="Navigasi utama" class="hidden items-center gap-7 text-sm font-medium lg:flex">
-      <details class="relative" data-dropdown>
+      <details class="group relative" data-dropdown>
         <summary class="flex min-h-11 list-none items-center gap-2 hover:text-accent-text">
-          Solusi <span aria-hidden="true">⌄</span>
+          Solusi{' '}
+          <Icon
+            name="chevron"
+            class="shrink-0 transition-transform duration-160 ease-out group-open:rotate-180"
+          />
         </summary>
         <div class="glass absolute left-0 top-full w-72 p-3">
           <a href="/solutions" class="block rounded-control p-3 hover:bg-raised">
@@ -35,9 +39,13 @@ const path = Astro.url.pathname;
           {n.label}
         </a>
       ))}
-      <details class="relative" data-dropdown>
+      <details class="group relative" data-dropdown>
         <summary class="flex min-h-11 list-none items-center gap-2 hover:text-accent-text">
-          Alat <span aria-hidden="true">⌄</span>
+          Alat{' '}
+          <Icon
+            name="chevron"
+            class="shrink-0 transition-transform duration-160 ease-out group-open:rotate-180"
+          />
         </summary>
         <div class="glass absolute right-0 top-full w-64 p-3">
           {[

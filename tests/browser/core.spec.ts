@@ -87,3 +87,19 @@ test('speed testing can cancel and recover from network failure', async ({ page 
   await expect(page.getByRole('status')).toContainText('terhenti');
   await expect(page.getByRole('button', { name: 'Mulai pengujian' })).toBeEnabled();
 });
+
+test('header dropdown chevrons follow keyboard opening and dismissal', async ({ page }) => {
+  await page.goto('/');
+  for (const label of ['Solusi', 'Alat']) {
+    const summary = page.locator('summary').filter({ hasText: label });
+    const icon = summary.locator('svg');
+    await expect(icon).toHaveAttribute('aria-hidden', 'true');
+    await expect(icon).toHaveCSS('rotate', 'none');
+    await summary.focus();
+    await page.keyboard.press('Enter');
+    await expect(icon).toHaveCSS('rotate', '180deg');
+    await page.keyboard.press('Escape');
+    await expect(summary).toBeFocused();
+    await expect(icon).toHaveCSS('rotate', 'none');
+  }
+});

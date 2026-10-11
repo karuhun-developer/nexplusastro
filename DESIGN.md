@@ -28,6 +28,8 @@ Atoms: Button/LinkButton variants, Icon, Brand, Kicker, Panel, input/select/text
 
 ## 6. Interaction and motion
 
+Header dropdowns use the shared 20px SVG chevron, pointing down when closed and up when open, with a 160ms transform transition. Native details keep keyboard activation and Escape dismissal.
+
 Control feedback 160ms ease-out; arrival fade/translate 400ms; no layout animations. Source customer marquee keeps duplicate track and pauses on hover/focus, with a visible pause control. Reduced motion stops marquee, disables positional animation and smooth scrolling. Infrastructure replay is a finite 1.8s illustration, interrupted on hidden document. Native navigation and saved light/dark preference; initial theme script runs before paint. Consultation has visible close, Escape and focus restoration. Clipboard failure offers selectable text.
 
 ## 7. Responsive and accessibility
