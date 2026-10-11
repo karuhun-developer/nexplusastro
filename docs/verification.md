@@ -34,7 +34,7 @@ Referensi Home dibandingkan pada viewport desktop yang sama. Logo, font, hero, i
 - Formulir memfokuskan input invalid pertama, mengaitkan error dengan field dan menyiapkan pesan tanpa POST.
 - Kalkulator menghitung 250 × 2 = 500 Mbps dan 250 × 3,5 = 875 Mbps; asumsi 0 memblokir tindakan.
 - Replay infrastruktur selesai dalam 1,8 detik, dapat dihentikan, dan disabled pada reduced motion. Marquee pelanggan dapat dijeda dan berhenti pada reduced motion.
-- Speed test berhasil memakai aset host lokal. Abort/cancellation dan kegagalan request juga diuji melalui browser.
+- Verifikasi migrasi awal memakai aset host lokal. Perubahan berikutnya ke server publik dijelaskan pada catatan verifikasi di bawah.
 - Fokus, label, hierarki, reflow ponsel, teks status dan light/dark diperiksa. Ini pengujian browser Chromium dan emulasi perangkat, bukan sertifikasi aksesibilitas atau pengujian Safari/Firefox/perangkat fisik.
 
 ## Pemeriksaan otomatis
@@ -67,4 +67,14 @@ Artefak sesi lokal berada di `/tmp/nexplus-final-qa`: `matrix.json`, `interactio
 
 ## Batas fungsi
 
-Kontak masih contoh dan harus diganti sebelum digunakan untuk konsultasi nyata. Formulir/dialog menyiapkan pesan; tidak mengirim data atau memakai AI. Monitoring adalah data demo statis dan selalu noindex. Pengecekan cakupan tidak menyatakan lokasi sudah terjangkau. Speed test mengukur download dan latency HTTP ke host halaman, bukan upload/ICMP/SLA; batas 16 MiB berlaku untuk payload bawaan di bawah 1 MiB. Metadata domain dan indexing memerlukan rebuild setelah environment berubah.
+Kontak masih contoh dan harus diganti sebelum digunakan untuk konsultasi nyata. Formulir/dialog menyiapkan pesan; tidak mengirim data atau memakai AI. Monitoring adalah data demo statis dan selalu noindex. Pengecekan cakupan tidak menyatakan lokasi sudah terjangkau. Speed test mengukur unduh, unggah, dan latensi HTTP ke server publik Cloudflare; bukan ICMP atau jaminan SLA. Payload dibatasi 32 MiB unduh dan 8 MiB unggah; ketersediaan server eksternal memengaruhi hasil. Metadata domain dan indexing memerlukan rebuild setelah environment berubah.
+
+## Perbaikan dropdown dan server pengujian, 11 Oktober 2026
+
+Dropdown Solusi/Alat memakai SVG 20px dari atom Icon. Chromium mengamati rotasi 180 derajat saat terbuka, aktivasi keyboard, Escape dan pemulihan fokus; reduced motion menghasilkan transisi 0 detik. Semua 14 route diperiksa pada 390/1440/1920 dalam light/dark, bagian atas dan akhir dokumen: 84 kombinasi dan 168 capture. Tidak ada overflow, gambar rusak, atau exception runtime. Contact sheet untuk setiap pasangan ukuran/tema diperiksa secara visual; hasil PASS per route. Halaman speed test ditangkap ulang setelah penambahan jeda antartes.
+
+Permintaan nyata dari localhost berhasil menuju endpoint publik Cloudflare: hasil terakhir 35,9 Mbps unduh dan 32,4 Mbps unggah, dengan 38 MiB payload terukur. Angka tersebut hanya hasil koneksi sesi pengujian, bukan patokan kecepatan pengguna. Pengujian berhenti pada batas waktu/data, dan mempertahankan unduh saat unggah gagal. HTTP 429 menghentikan tahap tanpa retry; jeda 60 detik sejak mulai tes tersimpan dalam sesi tab. Pembatasan di browser bukan penegakan per IP atau jaminan bebas rate limit dari penyedia.
+
+Artefak lokal: `/tmp/nexplus-header-speed-qa`, termasuk hasil permintaan nyata, dropdown sebelum/sesudah, matrix, contact sheet, menu ponsel dan reduced motion. Output build tetap 14 halaman HTML dengan `output: static`, tanpa adapter SSR. Pengecekan tipe tanpa error/warning/hint dan 23 unit test lulus, termasuk endpoint eksternal dari localhost, batas transfer, pembatalan unggah, unggah gagal, respons kosong, serta HTTP 429.
+
+Tujuh skenario E2E dan pemeriksaan SEO produksi lulus setelah perubahan terakhir. E2E membuktikan pembatalan/pemulihan jaringan, unggahan 8 MiB, tombol tertahan selama jeda, jeda tetap berlaku setelah refresh, dan tombol tersedia lagi setelah waktu berlalu. Endpoint E2E diintersep agar pengujian otomatis tidak membebani server publik; pengujian transfer nyata dilakukan terpisah melalui browser.

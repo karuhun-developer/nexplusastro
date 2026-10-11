@@ -28,14 +28,99 @@ describe('bounded speed measurement', () => {
       'fetch',
       vi.fn(
         async (request: Request) =>
-          new Response(new Uint8Array(request.url.includes('favicon') ? 64 : 524288)),
+          new Response(new Uint8Array(Number(new URL(request.url).searchParams.get('bytes')))),
       ),
     );
     const result = await measureSpeed(new AbortController().signal, () => {});
     expect(result.kind).toBe('done');
     if (result.kind === 'done') {
       expect(result.result.bytes).toBeLessThanOrEqual(speedLimits.bytes);
+      expect(result.result.uploadedBytes).toBe(speedLimits.uploadBytes);
+      expect(result.result.uploadMbps).toBeGreaterThan(0);
       expect(result.result.floor).toBe(true);
     }
+  });
+  it('measures the public network even when the page runs on localhost', async () => {
+    vi.stubGlobal('location', { origin: 'http://localhost:4321' });
+    const requests: Request[] = [];
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (request: Request) => {
+        requests.push(request);
+        return new Response(new Uint8Array(request.method === 'POST' ? 0 : 524288));
+      }),
+    );
+    const result = await measureSpeed(new AbortController().signal, () => {});
+    expect(result.kind).toBe('done');
+    expect(
+      requests.every((request) => new URL(request.url).origin === 'https://speed.cloudflare.com'),
+    ).toBe(true);
+    expect(requests.some((request) => request.method === 'POST')).toBe(true);
+  });
+  it('keeps the download result when the upload server fails', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (request: Request) =>
+        request.method === 'POST'
+          ? new Response('unavailable', { status: 503 })
+          : new Response(new Uint8Array(Number(new URL(request.url).searchParams.get('bytes')))),
+      ),
+    );
+    const outcome = await measureSpeed(new AbortController().signal, () => {});
+    expect(outcome.kind).toBe('done');
+    if (outcome.kind === 'done') {
+      expect(outcome.result.mbps).toBeGreaterThan(0);
+      expect(outcome.result.uploadMbps).toBeNull();
+      expect(outcome.result.uploadedBytes).toBe(0);
+    }
+  });
+  it('honors cancellation during upload', async () => {
+    const controller = new AbortController();
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (request: Request) => {
+        if (request.method === 'POST') {
+          controller.abort();
+          throw new DOMException('Aborted', 'AbortError');
+        }
+        return new Response(new Uint8Array(Number(new URL(request.url).searchParams.get('bytes'))));
+      }),
+    );
+    expect((await measureSpeed(controller.signal, () => {})).kind).toBe('cancelled');
+  });
+  it('rejects empty downloads instead of looping until the time limit', async () => {
+    const fetch = vi.fn(async () => new Response(''));
+    vi.stubGlobal('fetch', fetch);
+    expect((await measureSpeed(new AbortController().signal, () => {})).kind).toBe('error');
+    expect(fetch.mock.calls.length).toBeLessThanOrEqual(6 + speedLimits.streams);
+  });
+  it('stops immediately when latency probes receive a rate limit', async () => {
+    const fetch = vi.fn(async () => new Response('limited', { status: 429 }));
+    vi.stubGlobal('fetch', fetch);
+    const outcome = await measureSpeed(new AbortController().signal, () => {});
+    expect(outcome.kind).toBe('error');
+    if (outcome.kind === 'error') expect(outcome.message).toContain('membatasi permintaan');
+    expect(fetch).toHaveBeenCalledTimes(1);
+  });
+  it('keeps the download while explaining an upload rate limit', async () => {
+    let posts = 0;
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (request: Request) => {
+        if (request.method === 'POST') {
+          posts++;
+          return new Response('limited', { status: 429 });
+        }
+        return new Response(new Uint8Array(Number(new URL(request.url).searchParams.get('bytes'))));
+      }),
+    );
+    const outcome = await measureSpeed(new AbortController().signal, () => {});
+    expect(outcome.kind).toBe('done');
+    if (outcome.kind === 'done') {
+      expect(outcome.result.mbps).toBeGreaterThan(0);
+      expect(outcome.result.uploadMbps).toBeNull();
+      expect(outcome.result.uploadError).toContain('membatasi permintaan');
+    }
+    expect(posts).toBe(1);
   });
 });

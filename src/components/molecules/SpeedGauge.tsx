@@ -1,4 +1,10 @@
-export function SpeedGauge({ mbps }: { readonly mbps: number }) {
+export function SpeedGauge({
+  mbps,
+  direction = 'unduh',
+}: {
+  readonly mbps: number;
+  readonly direction?: 'unduh' | 'unggah';
+}) {
   const rotation = -120 + Math.min(Math.log10(1 + mbps) / Math.log10(1001), 1) * 240;
   return (
     <svg viewBox="0 0 320 280" className="w-full" aria-hidden="true">
@@ -48,7 +54,7 @@ export function SpeedGauge({ mbps }: { readonly mbps: number }) {
         {mbps.toFixed(1)}
       </text>
       <text x="160" y="233" textAnchor="middle" fill="var(--muted)" fontSize="12">
-        Mbps unduh
+        Mbps {direction}
       </text>
     </svg>
   );

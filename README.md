@@ -47,7 +47,7 @@ Setiap halaman mempunyai judul, deskripsi, canonical, Open Graph, Twitter card, 
 | `/contact`                      | Formulir konsultasi dan kontak                                |
 | `/coverage`                     | Permintaan pengecekan lokasi                                  |
 | `/bandwidth-calculator`         | Estimasi bandwidth                                            |
-| `/speed-test`                   | Uji download dan latency HTTP                                 |
+| `/speed-test`                   | Uji unduh, unggah, dan latensi HTTP                           |
 | `/infrastructure`               | Diagram konektivitas interaktif                               |
 | `/monitoring`                   | Dashboard demonstrasi                                         |
 | `404.html`                      | Pemulihan URL yang tidak ditemukan                            |
@@ -85,9 +85,13 @@ WhatsApp valid menjadi kanal utama, email valid menjadi fallback. Jika belum ter
 ## Perilaku alat
 
 - **Kalkulator:** pengguna aktif × Mbps per pengguna; default 250 × 2 = 500 Mbps. Profil, CCTV, dan layanan lain menjadi konteks pesan, tanpa penambahan bandwidth otomatis.
-- **Uji kecepatan:** enam probe HTTP berurutan, hingga empat stream download dari dua foto lokal, tanpa retry. Latency dibatasi 5 detik; download 7 detik dan 16 MiB untuk payload bawaan. UI diperbarui per 100 ms dan dapat dibatalkan. Hasil dipengaruhi host/browser/cache/koneksi, tidak mengukur upload atau menjamin SLA. Sampel singkat ditandai sebagai batas bawah. Saat mengganti foto uji, pertahankan masing-masing di bawah 1 MiB atau sesuaikan reservasi dan tes.
+- **Uji kecepatan:** browser mengukur langsung ke server publik Cloudflare, termasuk saat halaman dibuka dari localhost. Enam probe HTTP berurutan, hingga empat stream unduh, dan unggahan berurutan berjalan tanpa retry. Batas tahap: latensi 5 detik, unduh 7 detik/32 MiB, unggah 5 detik/8 MiB. Pengujian baru dimulai setelah tombol ditekan dan bisa dibatalkan. Data terukur menghitung payload unduh dan unggah yang berhasil diterima; penggunaan jaringan sebenarnya juga mencakup overhead dan permintaan yang terputus. Hasil adalah perkiraan jalur koneksi ke Cloudflare, bukan ping ICMP atau jaminan SLA. Unggah yang gagal ditampilkan sebagai tidak tersedia, sambil mempertahankan hasil unduh.
 - **Infrastruktur:** tiga node yang dapat dipilih dan replay 1,8 detik; berhenti saat tab tersembunyi dan mengikuti reduced motion.
 - **Monitoring:** perangkat, trafik, dan insiden merupakan data contoh tetap. Jam WITA mengikuti waktu browser, berhenti memperbarui saat tab tersembunyi. Tidak terhubung ke monitoring produksi.
+
+Ada jeda 60 detik sejak mulai tes, tersimpan di sesi tab agar refresh tidak langsung memulai tes baru. HTTP 429 menghentikan permintaan dan menampilkan pembatasan server, tanpa retry otomatis. Jeda di browser mengurangi pengulangan; bukan penegakan rate limit per IP. Cloudflare tidak memberikan jaminan kuota atau ketersediaan publik dalam README yang diperiksa. Untuk trafik besar, gunakan server pengujian sendiri.
+
+Uji kecepatan tetap berjalan pada shared hosting: upload seluruh isi `dist/`, tanpa proses Node atau SSR. Hosting hanya menyajikan HTML/aset; endpoint pengujian berada di luar hosting. Untuk memakai server NEX+ sendiri, ubah `speedServer` di `src/lib/speed-test.ts` dan sediakan endpoint GET `/__down?bytes=N` serta POST `/__up` dengan CORS yang mengizinkan origin website, respons tanpa cache/kompresi, dan batas payload.
 
 ## Pemeriksaan
 

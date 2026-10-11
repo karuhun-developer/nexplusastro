@@ -70,10 +70,13 @@ test('coverage validates location and monitoring filters demo data', async ({ pa
 
 test('speed testing can cancel and recover from network failure', async ({ page }) => {
   await page.goto('/speed-test');
-  await page.route('**/favicon.svg?probe=*', (route) => route.abort());
   const downloadStarted = Promise.withResolvers<void>();
   const failDownloads = Promise.withResolvers<void>();
-  await page.route('**/images/*.jpg?probe=*', async (route) => {
+  await page.route('https://speed.cloudflare.com/__down?*', async (route) => {
+    if (new URL(route.request().url()).searchParams.get('bytes') === '0') {
+      await route.fulfill({ body: '' });
+      return;
+    }
     downloadStarted.resolve();
     await failDownloads.promise;
     await route.abort();
@@ -82,9 +85,40 @@ test('speed testing can cancel and recover from network failure', async ({ page 
   await downloadStarted.promise;
   await page.getByRole('button', { name: 'Batalkan pengujian' }).click();
   await expect(page.getByRole('status')).toContainText('dibatalkan');
+  await expect(page.getByRole('button', { name: 'Mulai pengujian' })).toBeDisabled();
   failDownloads.resolve();
+  await page.clock.install();
+  await page.clock.fastForward(60_000);
   await page.getByRole('button', { name: 'Mulai pengujian' }).click();
   await expect(page.getByRole('status')).toContainText('terhenti');
+  await expect(page.getByRole('button', { name: 'Mulai pengujian' })).toBeDisabled();
+  await page.clock.fastForward(60_000);
+  await expect(page.getByRole('button', { name: 'Mulai pengujian' })).toBeEnabled();
+});
+
+test('speed testing reports download and upload from the public endpoint', async ({ page }) => {
+  await page.goto('/speed-test');
+  await page.route('https://speed.cloudflare.com/__down?*', async (route) => {
+    const bytes = Number(new URL(route.request().url()).searchParams.get('bytes'));
+    await route.fulfill({ body: Buffer.alloc(bytes) });
+  });
+  let uploadedBytes = 0;
+  await page.route('https://speed.cloudflare.com/__up?*', async (route) => {
+    expect(route.request().method()).toBe('POST');
+    uploadedBytes += route.request().postDataBuffer()?.byteLength ?? 0;
+    await route.fulfill({ body: '' });
+  });
+  await page.getByRole('button', { name: 'Mulai pengujian' }).click();
+  await expect(page.getByRole('status')).toContainText('Pengujian selesai');
+  await expect(page.getByRole('status')).toContainText('Unggah');
+  await expect(page.locator('dl')).toContainText('Cloudflare');
+  expect(uploadedBytes).toBe(8 * 1024 * 1024);
+  await expect(page.getByRole('button', { name: 'Ukur ulang' })).toBeDisabled();
+  await expect(page.getByText(/Pengujian berikutnya tersedia dalam/)).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole('button', { name: 'Mulai pengujian' })).toBeDisabled();
+  await page.clock.install();
+  await page.clock.fastForward(60_000);
   await expect(page.getByRole('button', { name: 'Mulai pengujian' })).toBeEnabled();
 });
 
