@@ -1,5 +1,8 @@
 node_modules/
 dist/
+dist-preview/
+.omo/
+.qa/
 .astro/
 .env
 .env.*

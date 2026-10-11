@@ -1,0 +1,5 @@
+{
+  "ignore": {
+    "files": ["dist/**", "dist-preview/**", ".astro/**", "test-results/**", "playwright-report/**"]
+  }
+}

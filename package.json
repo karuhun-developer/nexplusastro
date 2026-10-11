@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=22.12.0" },
-  "overrides": { "@vitejs/plugin-react": "6.1.1" },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "overrides": {
+    "@vitejs/plugin-react": "6.1.1"
+  },
   "scripts": {
     "dev": "astro dev --host 0.0.0.0",
     "build": "astro build",
@@ -12,8 +16,11 @@
     "check": "astro check && tsc --noEmit",
     "test": "vitest run",
     "test:e2e": "playwright test",
+    "test:seo": "node tests/seo.mjs",
+    "generate:og": "node scripts/generate-og.mjs",
     "audit:react": "react-doctor . --yes",
-    "format": "biome format --write src config tests"
+    "format": "prettier --write src config scripts tests docs playwright.config.ts .github *.mjs *.json *.md",
+    "format:check": "prettier --check src config scripts tests docs playwright.config.ts .github *.mjs *.json *.md"
   },
   "dependencies": {
     "@astrojs/react": "^7.0.1",
@@ -35,14 +42,16 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
-    "@biomejs/biome": "^2.2.5",
     "@playwright/test": "^1.58.2",
     "@types/node": "^22.18.6",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.1",
     "react-doctor": "latest",
     "react-grab": "latest",
     "react-scan": "latest",
+    "sharp": "^0.35.5",
     "typescript": "^5.9.3",
     "vitest": "^4.0.0"
   }
