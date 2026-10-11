@@ -57,6 +57,8 @@
 .marquee-track { animation:marquee 38s linear infinite; }
 .marquee:hover .marquee-track,.marquee:focus-within .marquee-track,.marquee[data-paused=true] .marquee-track { animation-play-state:paused; }
 @keyframes marquee { to { transform:translateX(-50%); } }
+.route-pulse { animation:route-pulse .6s ease-in-out 3; }
+@keyframes route-pulse { from { transform:translateX(-24px); opacity:0; } 50% { opacity:1; } to { transform:translateX(24px); opacity:0; } }
 [data-reveal].ready { transition:opacity .4s ease-out,transform .4s ease-out; }
 [data-reveal].waiting { opacity:0; transform:translateY(16px); }
 @media(max-width:767px) { .text-hero { font-size:clamp(2rem,8.2vw,2.5rem); } }

@@ -1,0 +1,5 @@
+---
+import {stream,focusNode} from '@/lib/monitoring';
+const path=(series:readonly number[],area=false)=>{const points=series.map((v,i)=>(i*760/(series.length-1)).toFixed(1)+','+(260-v/stream.peak*260).toFixed(1));return area?'M0,260 L'+points.join(' L')+' L760,260 Z':'M'+points.join(' L');};
+---
+<figure><svg viewBox="0 0 760 280" class="mt-8 w-full" role="img" aria-label={'Grafik contoh lalu lintas '+focusNode.name+'; puncak masuk 118 Mbps, keluar 79 Mbps.'}>{[0,.25,.5,.75,1].map(f=><line x1="0" x2="760" y1={260*f} y2={260*f} stroke="var(--rule)" stroke-dasharray="4 6"/>)}<path d={path(stream.inbound,true)} fill="var(--glow)"/><path d={path(stream.inbound)} fill="none" stroke="var(--color-accent)" stroke-width="3"/><path d={path(stream.outbound)} fill="none" stroke="var(--muted)" stroke-width="2" stroke-dasharray="7 5"/></svg><figcaption class="flex justify-between gap-2 text-[10px] text-muted">{stream.labels.map(l=><span>{l}</span>)}</figcaption></figure>

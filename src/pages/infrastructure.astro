@@ -1,0 +1,10 @@
+---
+import SiteLayout from '@/layouts/SiteLayout.astro';
+import SectionHeading from '@/components/molecules/SectionHeading.astro';
+import Breadcrumbs from '@/components/molecules/Breadcrumbs.astro';
+import LinkButton from '@/components/atoms/LinkButton.astro';
+import {InfrastructureExplorer} from '@/components/organisms/InfrastructureExplorer';
+const breadcrumbs=[{label:'Infrastruktur'}];
+---
+<SiteLayout title="Infrastruktur dan Ekosistem NEX+" description="Kenali alur konektivitas Cyber 2 Jakarta, neuCentrIX Banjarmasin, dan bisnis Anda melalui ekosistem NEX+." breadcrumbs={breadcrumbs}><section class="container-nex py-12 lg:py-20"><Breadcrumbs items={breadcrumbs}/><SectionHeading page kicker="NEX+ Ecosystem" title="Dari pusat data,
+sampai ke bisnis Anda." description="Jelajahi alur infrastruktur NEX+. Pilih titik pada diagram untuk mengenali peran tiap bagian jaringan."/><InfrastructureExplorer client:load/><div class="mt-10 flex flex-wrap justify-between gap-6"><p class="max-w-[50ch] text-sm text-muted">Diagram menggambarkan ekosistem konektivitas. Rancangan dan ketersediaan layanan untuk lokasi Anda dikonfirmasi oleh tim.</p><LinkButton href="/contact" diagonal>Konsultasi infrastruktur</LinkButton></div></section></SiteLayout>
