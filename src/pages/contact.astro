@@ -1,0 +1,11 @@
+---
+import SiteLayout from '@/layouts/SiteLayout.astro';
+import SectionHeading from '@/components/molecules/SectionHeading.astro';
+import Breadcrumbs from '@/components/molecules/Breadcrumbs.astro';
+import {EnquiryForm} from '@/components/organisms/EnquiryForm';
+import {ConsultationDialog} from '@/components/organisms/ConsultationDialog';
+import {company} from '@/lib/content';
+const breadcrumbs=[{label:'Kontak'}];
+---
+<SiteLayout title="Konsultasi Kebutuhan Konektivitas" description="Ceritakan kebutuhan konektivitas bisnis Anda dan susun konsultasi untuk tim NEX+." breadcrumbs={breadcrumbs}><section class="container-nex py-12 lg:py-20"><Breadcrumbs items={breadcrumbs}/><SectionHeading page kicker="Mari Terhubung" title="Ceritakan kebutuhan
+bisnis Anda." description="Isi kebutuhan, lokasi, dan kontak Anda. Susun pesan konsultasi untuk menentukan layanan yang tepat bersama tim NEX+."/><div class="grid gap-8 lg:grid-cols-[1.5fr_1fr]"><EnquiryForm client:load/><aside class="glass self-start p-6 sm:p-8"><h2 class="text-2xl">Hubungi NEX+</h2><p class="mt-4 text-sm text-muted">{company.legalName}</p><div class="my-6 grid gap-4 border-y border-rule py-6"><p class="text-xs uppercase tracking-widest text-accent-text">Kontak contoh</p><div><p class="text-xs text-muted">Email</p><p class="mt-1 break-all">{company.email}</p></div><div><p class="text-xs text-muted">Telepon</p><p class="mt-1">{company.phone}</p></div></div><p class="mb-6 text-sm text-muted">Informasi kontak ini masih contoh. Formulir menyiapkan pesan yang bisa Anda salin.</p><ConsultationDialog client:load/></aside></div></section></SiteLayout>

@@ -1,0 +1,10 @@
+---
+import SiteLayout from '@/layouts/SiteLayout.astro';
+import SectionHeading from '@/components/molecules/SectionHeading.astro';
+import Breadcrumbs from '@/components/molecules/Breadcrumbs.astro';
+import LinkButton from '@/components/atoms/LinkButton.astro';
+import {EnquiryForm} from '@/components/organisms/EnquiryForm';
+const breadcrumbs=[{label:'Cakupan'}];
+---
+<SiteLayout title="Cek Ketersediaan Layanan" description="Susun pertanyaan ketersediaan layanan NEX+ untuk lokasi bisnis Anda. Cakupan dikonfirmasi langsung oleh tim." breadcrumbs={breadcrumbs}><section class="container-nex py-12 lg:py-20"><Breadcrumbs items={breadcrumbs}/><SectionHeading page kicker="Cek Ketersediaan" title="Layanan kami sampai
+ke lokasi Anda?" description="Ketersediaan tiap lokasi dipastikan langsung oleh tim NEX+. Tulis lokasi Anda, dan susun pertanyaan untuk tim."/><div class="grid gap-8 lg:grid-cols-[1.4fr_1fr]"><EnquiryForm mode="coverage" client:load/><aside class="glass self-start p-6 sm:p-8"><h2 class="text-2xl">Lokasi dulu. Solusi menyusul.</h2><ol class="mt-6 grid gap-6">{['Tulis alamat atau nama kelurahan lokasi bisnis.','Pilih jenis tempat dan layanan yang diminati.','Susun pesan untuk tim; ketersediaan dikonfirmasi langsung.'].map((t,i)=><li class="flex gap-4 text-sm"><span class="text-accent-text">0{i+1}</span><span class="text-muted">{t}</span></li>)}</ol><p class="mt-6 border-t border-rule pt-6 text-sm text-muted">Peta cakupan otomatis belum tersedia. Formulir ini tidak menjanjikan ketersediaan layanan di alamat tertentu.</p><LinkButton href="/solutions" variant="link">Jelajahi layanan</LinkButton></aside></div></section></SiteLayout>
