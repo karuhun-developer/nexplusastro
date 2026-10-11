@@ -1,0 +1,5 @@
+---
+interface Props { class?:string; id?:string; }
+const { class:className='',id }=Astro.props;
+---
+<div id={id} class:list={['glass min-w-0',className]}><slot/></div>

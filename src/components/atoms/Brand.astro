@@ -1,0 +1,5 @@
+---
+interface Props { class?:string; }
+const { class:className='' }=Astro.props;
+---
+<span class:list={['inline-flex font-display text-3xl font-bold tracking-[-.07em]',className]}>NEX<span class="text-accent">+</span></span>

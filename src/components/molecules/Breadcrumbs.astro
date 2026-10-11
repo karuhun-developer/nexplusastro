@@ -1,0 +1,5 @@
+---
+interface Props { items:readonly { readonly label:string; readonly href?:string }[]; }
+const { items }=Astro.props;
+---
+<nav aria-label="Breadcrumb" class="mb-8 text-sm text-muted"><ol class="flex flex-wrap gap-x-3 gap-y-2"><li><a href="/" class="hover:text-ink">Beranda</a></li>{items.map(item=><li class="flex gap-3"><span aria-hidden="true">/</span>{item.href?<a href={item.href} class="hover:text-ink">{item.label}</a>:<span aria-current="page">{item.label}</span>}</li>)}</ol></nav>

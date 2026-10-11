@@ -1,0 +1,7 @@
+---
+import Kicker from '../atoms/Kicker.astro';
+interface Props { kicker:string; title:string; description?:string; page?:boolean; }
+const { kicker,title,description,page=false }=Astro.props;
+const Heading=page?'h1':'h2';
+---
+<div class="mb-12 grid items-end gap-6 md:grid-cols-[1.2fr_1fr] md:gap-16" data-reveal><div><Kicker>{kicker}</Kicker><Heading class:list={[page?'text-title':'text-section','leading-[1.1] max-w-3xl whitespace-pre-line']}>{title}</Heading></div>{description && <p class="max-w-[46ch] text-muted">{description}</p>}</div>
